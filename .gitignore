@@ -3,3 +3,4 @@ client/src/.cache-loader
 node_modules
 venv
 venv36
+.idea
