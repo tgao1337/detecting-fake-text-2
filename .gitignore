@@ -8,3 +8,5 @@ venv36
 .idea/detecting-fake-text.iml
 .idea/misc.xml
 .idea/workspace.xml
+*.iml
+*.xml
