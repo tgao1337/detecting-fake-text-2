@@ -4,3 +4,7 @@ node_modules
 venv
 venv36
 .idea
+.idea/detecting-fake-text.iml
+.idea/detecting-fake-text.iml
+.idea/misc.xml
+.idea/workspace.xml
