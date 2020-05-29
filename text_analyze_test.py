@@ -78,5 +78,5 @@ res = {
 
 print(res)
 
-#with open('test_json2.json', 'w') as outfile:
-#    json.dump(res, outfile)
+with open('test_json.json', 'w') as outfile:
+    json.dump(res, outfile)
