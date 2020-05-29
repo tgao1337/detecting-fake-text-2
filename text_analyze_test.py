@@ -73,7 +73,7 @@ Tests for GPT-2
 raw_text = remove_symbols_from_text(raw_text)
 lm = api.LM()
 start = api.time.time()
-payload = lm.check_probabilities(raw_text, topk=5)
+payload = lm.check_probabilities(raw_text, topk=40)
 end = api.time.time()
 print("{:.2f} Seconds for a check with GPT-2".format(end - start))
 '''for item in payload["pred_topk"]:
