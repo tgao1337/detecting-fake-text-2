@@ -17,12 +17,24 @@
 import json
 from backend import api
 
+def remove_symbols_from_text(text):
+    # given string, removes symbols
+    for char in text:
+        if char in "“”":
+            text = text.replace(char, '"')
+        if char in "‘’":
+            text = text.replace(char, '\'')
+        if char in "–":
+            text = text.replace(char, '-')
+    return text
+
+
 raw_text = """
     In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.
 
     The scientist named the population, after their distinctive horn, Ovid's Unicorn. These four-horned, silver-white unicorns were previously unknown to science.
 
-    Now, after almost two centuries, the mystery of what sparked this odd phenomenon is finally solved.
+    Now, after almost two centuries, the mystery of what sparked this odd phenomenon is finally solved.––
 
     Dr. Jorge Pérez, an evolutionary biologist from the University of La Paz, and several companions, were exploring the Andes Mountains when they found a small valley, with no other animals or humans. Pérez noticed that the valley had what appeared to be a natural fountain, surrounded by two peaks of rock and silver snow.
 
@@ -55,6 +67,8 @@ print("{:.2f} Seconds for a run with BERT".format(end - start))"""
 '''
 Tests for GPT-2
 '''
+
+raw_text = remove_symbols_from_text(raw_text)
 lm = api.LM()
 start = api.time.time()
 payload = lm.check_probabilities(raw_text, topk=5)
