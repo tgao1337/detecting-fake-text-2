@@ -16,7 +16,14 @@ print(df['Survived'][4])
 with open('test_json.json') as json_file:
     file = json.load(json_file)
 
-print(file)
+realtk = file["result"]["real_topk"]
+predtk = file["result"]["pred_topk"]
+print(realtk)
 
-df = pd.read_json('test_json.json')
-print(df)
+realdf = pd.DataFrame(realtk)
+print(realdf)
+
+preddf = pd.DataFrame(predtk)
+print(preddf)
+
+print(preddf[19][0][1])
