@@ -2,21 +2,14 @@
 
 import pandas as pd
 import json
-
-'''
-df = pd.read_csv('titanic.csv')
-print(df)
-
-df = df.drop(['Name', 'Siblings/Spouses Aboard', 'Parents/Children Aboard'], axis=1)
-print(df.head(8))
-
-print(df['Survived'][4])
-'''
+from scipy.stats import entropy
+from scipy.spatial import distance
 
 
 def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
     # takes in the json part for real_topk and returns the counts of top1,2,3,4
     # top4 is just whatever is past the last number, for example >1000
+    # returns list in order of top1 to top4 bins
     t1 = 0
     t2 = 0
     t3 = 0
@@ -34,41 +27,83 @@ def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
 
 
 def get_frac_p(real_topk, pred_topk):
+    # takes in real_topk and pred_topk and returns list of
+    # frac(p)
     res = []
     for i in range(len(real_topk)):
         res.append(real_topk[i][1] / pred_topk[i][0][1])
     return res
 
 
-with open('test_json.json') as json_file:
-    file = json.load(json_file)
+def fracp_bin_counter(fracp):
+    # takes in the list of all frac(p) and returns list of buckets from 0-1
+    # counting by 0.1
+    b0 = 0
+    b1 = 0
+    b2 = 0
+    b3 = 0
+    b4 = 0
+    b5 = 0
+    b6 = 0
+    b7 = 0
+    b8 = 0
+    b9 = 0
 
-realtk = file["result"]["real_topk"]
-predtk = file["result"]["pred_topk"]
-print(realtk)
+    for val in fracp:
+        if(val <= 0.1):
+            b0 = b0 + 1
+        elif(val <= 0.2):
+            b1 = b1 + 1
+        elif(val <= 0.3):
+            b2 = b2 + 1
+        elif (val <= 0.4):
+            b3 = b3 + 1
+        elif (val <= 0.5):
+            b4 = b4 + 1
+        elif (val <= 0.6):
+            b5 = b5 + 1
+        elif (val <= 0.7):
+            b6 = b6 + 1
+        elif (val <= 0.8):
+            b7 = b7 + 1
+        elif (val <= 0.9):
+            b8 = b8 + 1
+        else:
+            b9 = b9 + 1
+    print([b0, b1, b2, b3, b4, b5, b6, b7, b8, b9])
+    return [b0, b1, b2, b3, b4, b5, b6, b7, b8, b9]
 
-realdf = pd.DataFrame(realtk)
-print(realdf)
 
-preddf = pd.DataFrame(predtk)
-print(preddf)
+def get_kld(fp_bin1, fp_bin2):
+    return entropy(fp_bin1, fp_bin2)
 
-print(preddf[19][0][1])
-#realdf.to_csv("real.csv")
 
-print(realdf.describe())
+def get_jsd(fp_bin1, fp_bin2):
+    return distance.jensenshannon(fp_bin1, fp_bin2)
 
-lst = []
 
-for item in file["result"]["pred_topk"]:
-    lst.append(item[0][1])
+with open('test1.json') as json_file1:
+    file1 = json.load(json_file1)
 
-'''for L in lst:
-    f = open("top_pred.txt", "w")
-    f.writelines(str(L)+'\n')'''
+with open('test2.json') as json_file2:
+    file2 = json.load(json_file2)
 
-print(get_top_k_count(realtk))
-print(get_frac_p(realtk, predtk))
+with open('test3.json') as json_file3:
+    file3 = json.load(json_file3)
+
+realtk1 = file1["result"]["real_topk"]
+predtk1 = file1["result"]["pred_topk"]
+realtk2 = file2["result"]["real_topk"]
+predtk2 = file2["result"]["pred_topk"]
+realtk3 = file3["result"]["real_topk"]
+predtk3 = file3["result"]["pred_topk"]
+
+a = fracp_bin_counter(get_frac_p(realtk1, predtk1))
+b = fracp_bin_counter(get_frac_p(realtk2, predtk2))
+c = fracp_bin_counter(get_frac_p(realtk3, predtk3))
+
+print(get_kld(a, b))
+print(get_kld(b, c))
 
 
 
