@@ -75,10 +75,15 @@ def fracp_bin_counter(fracp):
 
 
 def get_kld(fp_bin1, fp_bin2):
+    # given two list of bin counts (10 long by default)
+    # returns KLD value
     return entropy(fp_bin1, fp_bin2)
 
 
 def get_kld_from_json_file(file1, file2):
+    # given two json objects
+    # returns KLD value
+    # this skips a lot of steps to make it easier
     realtk_1 = file1["result"]["real_topk"]
     predtk_1 = file1["result"]["pred_topk"]
     realtk_2 = file2["result"]["real_topk"]
@@ -87,6 +92,8 @@ def get_kld_from_json_file(file1, file2):
 
 
 def get_jsd(fp_bin1, fp_bin2):
+    # given two list of bin counts, (10 long by default)
+    # returns JSD value
     return distance.jensenshannon(fp_bin1, fp_bin2)
 
 
