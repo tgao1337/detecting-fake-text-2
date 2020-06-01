@@ -10,3 +10,5 @@ venv36
 .idea/workspace.xml
 *.iml
 *.xml
+.idea/workspace.xml
+*.xml

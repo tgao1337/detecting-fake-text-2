@@ -1,3 +1,6 @@
+# produces json files of analyzed text.
+
+
 #from server import analyze
 #import torch
 #from server import get_all_projects
@@ -94,5 +97,7 @@ res = {
 
 print(res)
 
-with open('test_json.json', 'w') as outfile:
-    json.dump(res, outfile)
+#with open('test_json.json', 'w') as outfile:
+#    json.dump(res, outfile)
+
+
