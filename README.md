@@ -1,3 +1,6 @@
+### Originally forked from https://github.com/HendrikStrobelt/detecting-fake-text
+This version is not forked. The forked version will no longer be updated.
+
 # GLTR: Giant Language Model Test Room
 Detecting text that was generated from large language models (e.g. GPT-2).
 
