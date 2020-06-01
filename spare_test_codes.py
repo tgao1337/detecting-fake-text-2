@@ -45,3 +45,29 @@ kld = entropy(frac_p_bins, frac_p_bins)
 print(kld)
 jsd = distance.jensenshannon(frac_p_bins, frac_p_bins)
 print(jsd)
+
+
+
+
+with open('test1.json') as json_file1:
+    file1 = json.load(json_file1)
+
+with open('test2.json') as json_file2:
+    file2 = json.load(json_file2)
+
+with open('test3.json') as json_file3:
+    file3 = json.load(json_file3)
+
+realtk1 = file1["result"]["real_topk"]
+predtk1 = file1["result"]["pred_topk"]
+realtk2 = file2["result"]["real_topk"]
+predtk2 = file2["result"]["pred_topk"]
+realtk3 = file3["result"]["real_topk"]
+predtk3 = file3["result"]["pred_topk"]
+
+a = fracp_bin_counter(get_frac_p(realtk1, predtk1))
+b = fracp_bin_counter(get_frac_p(realtk2, predtk2))
+c = fracp_bin_counter(get_frac_p(realtk3, predtk3))
+
+print(get_kld(a, b))
+print(get_kld(b, c))

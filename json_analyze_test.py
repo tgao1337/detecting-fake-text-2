@@ -70,12 +70,20 @@ def fracp_bin_counter(fracp):
             b8 = b8 + 1
         else:
             b9 = b9 + 1
-    print([b0, b1, b2, b3, b4, b5, b6, b7, b8, b9])
+    # print([b0, b1, b2, b3, b4, b5, b6, b7, b8, b9])
     return [b0, b1, b2, b3, b4, b5, b6, b7, b8, b9]
 
 
 def get_kld(fp_bin1, fp_bin2):
     return entropy(fp_bin1, fp_bin2)
+
+
+def get_kld_from_json_file(file1, file2):
+    realtk_1 = file1["result"]["real_topk"]
+    predtk_1 = file1["result"]["pred_topk"]
+    realtk_2 = file2["result"]["real_topk"]
+    predtk_2 = file2["result"]["pred_topk"]
+    return get_kld(fracp_bin_counter(get_frac_p(realtk_1, predtk_1)), fracp_bin_counter(get_frac_p(realtk_2, predtk_2)))
 
 
 def get_jsd(fp_bin1, fp_bin2):
@@ -91,19 +99,8 @@ with open('test2.json') as json_file2:
 with open('test3.json') as json_file3:
     file3 = json.load(json_file3)
 
-realtk1 = file1["result"]["real_topk"]
-predtk1 = file1["result"]["pred_topk"]
-realtk2 = file2["result"]["real_topk"]
-predtk2 = file2["result"]["pred_topk"]
-realtk3 = file3["result"]["real_topk"]
-predtk3 = file3["result"]["pred_topk"]
-
-a = fracp_bin_counter(get_frac_p(realtk1, predtk1))
-b = fracp_bin_counter(get_frac_p(realtk2, predtk2))
-c = fracp_bin_counter(get_frac_p(realtk3, predtk3))
-
-print(get_kld(a, b))
-print(get_kld(b, c))
+print(get_kld_from_json_file(file1, file2))
+print(get_kld_from_json_file(file2, file3))
 
 
 
