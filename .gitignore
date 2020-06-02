@@ -12,3 +12,4 @@ venv36
 *.xml
 .idea/workspace.xml
 *.xml
+gpt-2.medium-345M.train.jsonl
