@@ -19,6 +19,7 @@
 
 import json
 from backend import api
+import jsonlines
 
 def remove_symbols_from_text(text):
     # given string, removes symbols
@@ -100,4 +101,22 @@ print(res)
 #with open('test_json.json', 'w') as outfile:
 #    json.dump(res, outfile)
 
+output = []
+
+with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
+    for obj in reader:
+        raw_text = obj["text"]
+        raw_text = remove_symbols_from_text(raw_text)
+        # print(raw_text + "\n\n" + str(obj["id"]))
+        payload = lm.check_probabilities(raw_text, topk=20)
+        res = {
+            "request": {'project': "new", 'text': raw_text},
+            "result": payload
+        }
+        output.append(res)
+        if obj["id"] == 1000:
+            break
+
+with open('gpt2.analyzed.medk40train.json', 'w') as outfile:
+    json.dump(output, outfile)
 

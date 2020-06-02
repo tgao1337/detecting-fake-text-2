@@ -4,6 +4,7 @@ import pandas as pd
 import json
 from scipy.stats import entropy
 from scipy.spatial import distance
+import jsonlines
 
 
 def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
@@ -95,19 +96,6 @@ def get_jsd(fp_bin1, fp_bin2):
     # given two list of bin counts, (10 long by default)
     # returns JSD value
     return distance.jensenshannon(fp_bin1, fp_bin2)
-
-
-with open('test1.json') as json_file1:
-    file1 = json.load(json_file1)
-
-with open('test2.json') as json_file2:
-    file2 = json.load(json_file2)
-
-with open('test3.json') as json_file3:
-    file3 = json.load(json_file3)
-
-print(get_kld_from_json_file(file1, file2))
-print(get_kld_from_json_file(file2, file3))
 
 
 
