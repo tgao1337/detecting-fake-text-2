@@ -1,6 +1,13 @@
 ### Originally forked from https://github.com/HendrikStrobelt/detecting-fake-text
 This version is not forked. The forked version will no longer be updated.
 
+## Text used:
+- https://storage.googleapis.com/gpt-2/output-dataset/v1/webtext.train.jsonl
+- https://storage.googleapis.com/gpt-2/output-dataset/v1/medium-345M.train.jsonl
+- https://storage.googleapis.com/gpt-2/output-dataset/v1/medium-345M-k40.valid.jsonl
+- https://storage.googleapis.com/gpt-2/output-dataset/v1/medium-345M-k40.train.jsonl
+- https://raw.githubusercontent.com/openai/gpt-3/master/175b_samples.jsonl
+
 # GLTR: Giant Language Model Test Room
 Detecting text that was generated from large language models (e.g. GPT-2).
 
