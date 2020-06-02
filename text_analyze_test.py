@@ -28,8 +28,9 @@ def remove_symbols_from_text(text):
             text = text.replace(char, '"')
         if char in "‘’":
             text = text.replace(char, '\'')
-        if char in "–":
+        if char in "–—":
             text = text.replace(char, '-')
+    text.replace('\u2014', '-')
     return text
 
 
