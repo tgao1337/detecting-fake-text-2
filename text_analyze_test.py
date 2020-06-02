@@ -105,6 +105,7 @@ output = []
 
 with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
     for obj in reader:
+        print(str(obj["id"]))
         raw_text = obj["text"]
         raw_text = remove_symbols_from_text(raw_text)
         # print(raw_text + "\n\n" + str(obj["id"]))
@@ -113,10 +114,10 @@ with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
             "request": {'project': "new", 'text': raw_text},
             "result": payload
         }
-        output.append(res)
-        if obj["id"] == 1000:
+        output = output.append(res)
+        if obj["id"] == 10:
             break
 
 with open('gpt2.analyzed.medk40train.json', 'w') as outfile:
-    json.dump(output, outfile)
+    json.dump(str(output), outfile)
 

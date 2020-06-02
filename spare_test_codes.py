@@ -84,3 +84,33 @@ with open('test3.json') as json_file3:
 
 print(get_kld_from_json_file(file1, file2))
 print(get_kld_from_json_file(file2, file3))
+
+
+
+##############
+output = {}
+
+with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
+    for obj in reader:
+        print(str(obj["id"]))
+        raw_text = obj["text"]
+        raw_text = remove_symbols_from_text(raw_text)
+        # print(raw_text + "\n\n" + str(obj["id"]))
+        payload = lm.check_probabilities(raw_text, topk=20)
+        res = {
+            "request": {'project': "new", 'text': raw_text},
+            "result": payload
+        }
+        output = output.append(res)
+        dict = {
+            "id" : obj["id"],
+            'res': res
+        }
+        if obj["id"] == 1000:
+            break
+
+with open('gpt2.analyzed.medk40train.json', 'w') as outfile:
+    json.dump(output, outfile)
+
+
+############
