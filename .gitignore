@@ -16,3 +16,4 @@ gpt-2.medium-345M.train.jsonl
 gpt-2.webtext.train.jsonl
 gpt-2.medium-345M-k40.valid.jsonl
 gpt-2.medium-345M-k40.train.jsonl
+gpt-3.175b_samples.jsonl
