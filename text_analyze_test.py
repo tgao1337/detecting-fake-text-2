@@ -139,7 +139,7 @@ with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
             output.append(res)
             # break
             torch.cuda.empty_cache()
-            if obj["id"] == 10:
+            if obj["id"] == 100:
                 break
 
 #with open('gpt2.analyzed.medk40train-1000.json', 'w') as outfile:

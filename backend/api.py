@@ -90,7 +90,8 @@ class LM(AbstractLanguageChecker):
                                dtype=torch.long).unsqueeze(0)
         context = torch.cat([start_t, context], dim=1)
         # Forward through the model
-        logits, _ = self.model(context)
+        with torch.no_grad():
+            logits, _ = self.model(context)
 
         # construct target and pred
         yhat = torch.softmax(logits[0, :-1], dim=-1)
