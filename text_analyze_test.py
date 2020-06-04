@@ -20,6 +20,7 @@
 import json
 from backend import api
 import jsonlines
+import torch
 
 def remove_symbols_from_text(text):
     # given string, removes symbols
@@ -137,9 +138,10 @@ with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
             # print(output)
             output.append(res)
             # break
-            if obj["id"] == 10:
+            torch.cuda.empty_cache()
+            if obj["id"] == 1000:
                 break
 
-with open('gpt2.analyzed.medk40train.json', 'w') as outfile:
+with open('gpt2.analyzed.medk40train-1000.json', 'w') as outfile:
     json.dump(str(output), outfile)
 
