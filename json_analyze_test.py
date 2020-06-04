@@ -27,6 +27,13 @@ def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
     return [t1, t2, t3, t4]
 
 
+def get_top_k_count_from_file(json_file, top1 = 10, top2 = 100, top3 = 1000):
+    # takes in the json file and returns the counts of top1,2,3,4
+    # top4 is just whatever is past the last number, for example >1000
+    # returns list in order of top1 to top4 bins
+    return get_top_k_count(json_file["result"]["real_topk"], top1, top2, top3)
+
+
 def get_frac_p(real_topk, pred_topk):
     # takes in real_topk and pred_topk and returns list of
     # frac(p)
@@ -75,6 +82,13 @@ def fracp_bin_counter(fracp):
     return [b0, b1, b2, b3, b4, b5, b6, b7, b8, b9]
 
 
+def fracp_bin_counter_from_file(json_file):
+    # takes json file (json structure) and returns bins count
+    rtk = json_file["result"]["real_topk"]
+    ptk = json_file["result"]["pred_topk"]
+    return fracp_bin_counter(get_frac_p(rtk, ptk))
+
+
 def get_kld(fp_bin1, fp_bin2):
     # given two list of bin counts (10 long by default)
     # returns KLD value
@@ -97,5 +111,21 @@ def get_jsd(fp_bin1, fp_bin2):
     # returns JSD value
     return distance.jensenshannon(fp_bin1, fp_bin2)
 
+with open("gpt2.analyzed.medk40train-10.json") as f:
+    data = json.load(f)
+    '''data = data.replace("{'request': {'project': 'new', 'text': '", "{\"request\": {\"project\": \"new\", \"text\": \"")
+    data = data.replace("'}, 'result': {'bpe_strings':", "\"}, \"result\": {\"bpe_strings\":")
+    data = data.replace("'real_topk':", "\"real_topk\":")
+    data = data.replace("'pred_topk': ", "\"pred_topk\": ")
+    data = str(data).replace("\\\\", "\\")'''
+#d = json.loads(data)
+#
+
+
+
+print(type(data))
+for item in data:
+    print(get_top_k_count_from_file(item))
+    print(fracp_bin_counter_from_file(item))
 
 

@@ -142,6 +142,6 @@ with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
             if obj["id"] == 10:
                 break
 
-with open('gpt2.analyzed.medk40train-1000.json', 'w') as outfile:
-    json.dump(output, outfile)
+#with open('gpt2.analyzed.medk40train-1000.json', 'w') as outfile:
+#    json.dump(output, outfile)
 
