@@ -111,7 +111,7 @@ def get_jsd(fp_bin1, fp_bin2):
     # returns JSD value
     return distance.jensenshannon(fp_bin1, fp_bin2)
 
-with open("gpt2.analyzed.medk40train-10.json") as f:
+with open("gpt2.analyzed.medk40train-1000.json") as f:
     data = json.load(f)
     '''data = data.replace("{'request': {'project': 'new', 'text': '", "{\"request\": {\"project\": \"new\", \"text\": \"")
     data = data.replace("'}, 'result': {'bpe_strings':", "\"}, \"result\": {\"bpe_strings\":")
@@ -122,10 +122,14 @@ with open("gpt2.analyzed.medk40train-10.json") as f:
 #
 
 
-
+x = 0
 print(type(data))
+print(len(data))
+'''
 for item in data:
+    print(x)
     print(get_top_k_count_from_file(item))
     print(fracp_bin_counter_from_file(item))
+    x = x + 1'''
 
 
