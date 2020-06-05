@@ -142,6 +142,6 @@ with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
         if obj["id"] == 5000:
             break
 
-#with open('gpt2.analyzed.webtext-5000..json', 'w') as outfile:
+#with open('gpt2.analyzed.webtext-5000.json', 'w') as outfile:
 #    json.dump(output, outfile)
 
