@@ -119,7 +119,7 @@ print(res)
 
 output = []
 
-with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
+with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
     for obj in reader:
         if(obj["length"] < 1024): # only choose samples less than 1024 in length
             print(str(obj["id"]))
@@ -142,6 +142,6 @@ with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
         if obj["id"] == 5000:
             break
 
-with open('gpt2.analyzed.medk40train-5000.json', 'w') as outfile:
-    json.dump(output, outfile)
+#with open('gpt2.analyzed.webtext-5000..json', 'w') as outfile:
+#    json.dump(output, outfile)
 

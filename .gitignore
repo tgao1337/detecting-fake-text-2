@@ -19,3 +19,5 @@ gpt-2.medium-345M-k40.train.jsonl
 gpt-3.175b_samples.jsonl
 gpt2.analyzed.medk40train-1000.json
 gpt2.analyzed.medk40train-5000.json
+gpt2.analyzed.webtext-1000..json
+gpt2.analyzed.webtext-5000..json
