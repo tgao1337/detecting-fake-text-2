@@ -5,6 +5,7 @@ import json
 from scipy.stats import entropy
 from scipy.spatial import distance
 import jsonlines
+import numpy as np
 
 
 def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
@@ -111,25 +112,40 @@ def get_jsd(fp_bin1, fp_bin2):
     # returns JSD value
     return distance.jensenshannon(fp_bin1, fp_bin2)
 
-with open("gpt2.analyzed.medk40train-1000.json") as f:
-    data = json.load(f)
-    '''data = data.replace("{'request': {'project': 'new', 'text': '", "{\"request\": {\"project\": \"new\", \"text\": \"")
-    data = data.replace("'}, 'result': {'bpe_strings':", "\"}, \"result\": {\"bpe_strings\":")
-    data = data.replace("'real_topk':", "\"real_topk\":")
-    data = data.replace("'pred_topk': ", "\"pred_topk\": ")
-    data = str(data).replace("\\\\", "\\")'''
-#d = json.loads(data)
-#
+
+def compare_json_files_kld(filename1, filename2):
+    # given two file names, get json from it, then use kld
+    # returns list of all kld values
+    lst = []
+    with open(filename1) as f1:
+        d1 = json.load(f1)
+    with open(filename2) as f2:
+        d2 = json.load(f2)
+    print(str(len(d1))+"       F2:"+str(len(d2)))
+
+    for d1x in d1:
+        for d2x in d2:
+            lst.append(get_kld_from_json_file(d1x, d2x))
+    return lst
 
 
+
+#with open("gpt2.analyzed.webtext-10.json") as f:
+ #   data = json.load(f)
+'''
 x = 0
 print(type(data))
 print(len(data))
-'''
+
 for item in data:
     print(x)
     print(get_top_k_count_from_file(item))
     print(fracp_bin_counter_from_file(item))
     x = x + 1'''
 
-
+kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-100.json", "gpt2.analyzed.medk40train-100.json")
+print(len(kld_lst))
+print(kld_lst)
+kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+print(kld_df)
+print(kld_df.describe())
