@@ -90,6 +90,14 @@ def fracp_bin_counter_from_file(json_file):
     return fracp_bin_counter(get_frac_p(rtk, ptk))
 
 
+def zero_to_small_num(lst):
+    # takes a list and replaces all 0 with a small number
+    for i in range(len(lst)):
+        if lst[i] == 0:
+            lst[i] = 0.0000000000000000000001
+    return lst
+
+
 def get_kld(fp_bin1, fp_bin2):
     # given two list of bin counts (10 long by default)
     # returns KLD value
@@ -104,7 +112,14 @@ def get_kld_from_json_file(file1, file2):
     predtk_1 = file1["result"]["pred_topk"]
     realtk_2 = file2["result"]["real_topk"]
     predtk_2 = file2["result"]["pred_topk"]
-    return get_kld(fracp_bin_counter(get_frac_p(realtk_1, predtk_1)), fracp_bin_counter(get_frac_p(realtk_2, predtk_2)))
+
+    bins1 = fracp_bin_counter(get_frac_p(realtk_1, predtk_1))
+    bins2 = fracp_bin_counter(get_frac_p(realtk_2, predtk_2))
+    print(str(bins1) + "                   " + str(bins2))
+    bins1 = zero_to_small_num(bins1)
+    bins2 = zero_to_small_num(bins2)
+    print(str(bins1) + "                   " + str(bins2))
+    return get_kld(bins1, bins2)
 
 
 def get_jsd(fp_bin1, fp_bin2):
@@ -125,7 +140,9 @@ def compare_json_files_kld(filename1, filename2):
 
     for d1x in d1:
         for d2x in d2:
+            # print("D1: " + str(d1x) + "           D2: " + str(d2x))
             lst.append(get_kld_from_json_file(d1x, d2x))
+            print(lst[-1])
     return lst
 
 

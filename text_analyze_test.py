@@ -89,13 +89,13 @@ print("{:.2f} Seconds for a run with BERT".format(end - start))"""
 Tests for GPT-2
 '''
 
-raw_text = remove_symbols_from_text(raw_text)
-raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
-lm = api.LM()
-start = api.time.time()
-payload = lm.check_probabilities(raw_text, topk=20)
-end = api.time.time()
-print("{:.2f} Seconds for a check with GPT-2".format(end - start))
+#raw_text = remove_symbols_from_text(raw_text)
+#raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+#lm = api.LM()
+#start = api.time.time()
+#payload = lm.check_probabilities(raw_text, topk=20)
+#end = api.time.time()
+#print("{:.2f} Seconds for a check with GPT-2".format(end - start))
 '''for item in payload["pred_topk"]:
   print(lm.postprocess(item[0][0]))'''
 
@@ -107,18 +107,19 @@ end = api.time.time()
 print("{:.2f} Seconds for a sample from GPT-2".format(end - start))"""
 # print("SAMPLE:", sample)
 
-res = {
-        "request": {'project': "new", 'text': raw_text},
-        "result": payload
-    }
+#res = {
+#        "request": {'project': "new", 'text': raw_text},
+#        "result": payload
+#    }
 
-print(res)
+#print(res)
 
 #with open('test_json.json', 'w') as outfile:
 #    json.dump(res, outfile)
-
 output = []
 
+# analyze gpt2
+'''
 with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
     for obj in reader:
         if(obj["length"] < 1024): # only choose samples less than 1024 in length
@@ -144,4 +145,46 @@ with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
 
 #with open('gpt2.analyzed.webtext-5000.json', 'w') as outfile:
 #    json.dump(output, outfile)
+'''
+
+
+lm = api.LM()
+# analyze gpt3
+with jsonlines.open('gpt-3.175b_samples.jsonl') as reader:
+    for obj in reader:
+        #print(obj)
+        #print(len(obj))
+        #print(type(obj))
+        dot = [i for i in range(1024) if
+               obj.startswith('.', i) or obj.startswith('\n', i)]
+        #print(dot)
+        if len(dot) == 0:
+            dot = [i for i in range(1024) if obj.startswith(' ', i)]
+            if len(dot) == 0:
+                obj = obj[:1024]
+            obj = obj[:dot[-1]]
+        else:
+            obj = obj[:dot[-1]]
+        #print(len(obj))
+        #print((obj))
+
+        raw_text = remove_symbols_from_text(obj)
+        raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+        # print(raw_text)
+        # print(raw_text + "\n\n" + str(obj["id"]))
+        payload = lm.check_probabilities(raw_text, topk=20)
+            # print(payload)
+        res = {
+            "request": {'project': "new", 'text': raw_text},
+            "result": payload
+        }
+        # print(res)
+        # print(output)
+        output.append(res)
+        # break
+        torch.cuda.empty_cache()
+        if obj["id"] == 10:
+            break
+with open('gpt3.analyzed.machine-10.json', 'w') as outfile:
+    json.dump(output, outfile)
 
