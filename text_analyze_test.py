@@ -147,11 +147,12 @@ with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
 #    json.dump(output, outfile)
 '''
 
-
+counter = 0
 lm = api.LM()
 # analyze gpt3
 with jsonlines.open('gpt-3.175b_samples.jsonl') as reader:
     for obj in reader:
+        counter = counter + 1
         #print(obj)
         #print(len(obj))
         #print(type(obj))
@@ -183,8 +184,9 @@ with jsonlines.open('gpt-3.175b_samples.jsonl') as reader:
         output.append(res)
         # break
         torch.cuda.empty_cache()
-        if obj["id"] == 10:
-            break
-with open('gpt3.analyzed.machine-10.json', 'w') as outfile:
+        print(counter)
+        #if counter == 100:
+            #break
+with open('gpt3.analyzed.machine-485.json', 'w') as outfile:
     json.dump(output, outfile)
 
