@@ -114,3 +114,45 @@ with open('gpt2.analyzed.medk40train.json', 'w') as outfile:
 
 
 ############
+
+'''
+x = 0
+print(type(data))
+print(len(data))
+
+for item in data:
+    print(x)
+    print(get_top_k_count_from_file(item))
+    print(fracp_bin_counter_from_file(item))
+    x = x + 1'''
+
+##############################
+
+"""
+kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-100.json", "gpt2.analyzed.medk40train-100.json")
+pickle.dump(kld_lst, open("hGPT2mGPT2-100-list-original.pickle", "wb"))
+print(len(kld_lst))
+print(kld_lst)
+kld_df = pd.DataFrame(kld_lst)
+kld_df.to_pickle("hGPT2mGPT2-100-pd-original.pickle")
+kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+kld_df.to_pickle("hGPT2mGPT2-100-pd-no_infinity.pickle")
+print(kld_df)
+print(kld_df.describe())"""
+
+
+###########
+unpickle_original_pd = pd.read_pickle("hGPT2mGPT2-100-pd-original.pickle")
+print(unpickle_original_pd)
+print(unpickle_original_pd.describe())
+
+unpickle_noinf_pd = pd.read_pickle("hGPT2mGPT2-100-pd-no_infinity.pickle")
+print(unpickle_noinf_pd)
+print(unpickle_noinf_pd.describe())
+
+ori = pickle.load(open("hGPT2mGPT2-100-list-original.pickle", "rb"))
+print(ori)
+print(len(ori))
+
+
+##############

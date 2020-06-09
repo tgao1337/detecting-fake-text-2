@@ -6,6 +6,7 @@ from scipy.stats import entropy
 from scipy.spatial import distance
 import jsonlines
 import numpy as np
+import pickle
 
 
 def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
@@ -116,8 +117,8 @@ def get_kld_from_json_file(file1, file2):
     bins1 = fracp_bin_counter(get_frac_p(realtk_1, predtk_1))
     bins2 = fracp_bin_counter(get_frac_p(realtk_2, predtk_2))
     print(str(bins1) + "                   " + str(bins2))
-    bins1 = zero_to_small_num(bins1)
-    bins2 = zero_to_small_num(bins2)
+    # bins1 = zero_to_small_num(bins1)
+    # bins2 = zero_to_small_num(bins2)
     print(str(bins1) + "                   " + str(bins2))
     return get_kld(bins1, bins2)
 
@@ -146,7 +147,7 @@ def compare_json_files_kld(filename1, filename2):
     return lst
 
 
-
+## open analyzed json to test
 #with open("gpt2.analyzed.webtext-10.json") as f:
  #   data = json.load(f)
 '''
@@ -160,9 +161,41 @@ for item in data:
     print(fracp_bin_counter_from_file(item))
     x = x + 1'''
 
-kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-100.json", "gpt2.analyzed.medk40train-100.json")
+## open two json hGPT2 and mGPT2 and kld and then save as pickle
+# kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-1000.json", "gpt2.analyzed.medk40train-1000.json")
+# pickle.dump(kld_lst, open("hGPT2mGPT2-1000-list-original.pickle", "wb"))
+# print(len(kld_lst))
+# print(kld_lst)
+# kld_df = pd.DataFrame(kld_lst)
+# kld_df.to_pickle("hGPT2mGPT2-1000-pd-original.pickle")
+# kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+# kld_df.to_pickle("hGPT2mGPT2-1000-pd-no_infinity.pickle")
+# print(kld_df)
+# print(kld_df.describe())
+
+
+## unpickle gtp2gpt2
+# unpickle_original_pd = pd.read_pickle("hGPT2mGPT2-100-pd-original.pickle")
+# print(unpickle_original_pd)
+# print(unpickle_original_pd.describe())
+#
+# unpickle_noinf_pd = pd.read_pickle("hGPT2mGPT2-100-pd-no_infinity.pickle")
+# print(unpickle_noinf_pd)
+# print(unpickle_noinf_pd.describe())
+#
+# ori = pickle.load(open("hGPT2mGPT2-100-list-original.pickle", "rb"))
+# print(ori)
+# print(len(ori))
+
+# open hgpt2 and mgpt3
+kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-1000.json", "gpt2.analyzed.medk40train-1000.json")
+pickle.dump(kld_lst, open("hGPT2mGPT2-1000-list-original.pickle", "wb"))
 print(len(kld_lst))
 print(kld_lst)
+kld_df = pd.DataFrame(kld_lst)
+kld_df.to_pickle("hGPT2mGPT2-1000-pd-original.pickle")
 kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+kld_df.to_pickle("hGPT2mGPT2-1000-pd-no_infinity.pickle")
 print(kld_df)
 print(kld_df.describe())
+
