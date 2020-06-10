@@ -149,44 +149,88 @@ with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
 
 counter = 0
 lm = api.LM()
-# analyze gpt3
-with jsonlines.open('gpt-3.175b_samples.jsonl') as reader:
+# # analyze gpt3
+# with jsonlines.open('gpt-3.175b_samples.jsonl') as reader:
+#     for obj in reader:
+#         counter = counter + 1
+#         #print(obj)
+#         #print(len(obj))
+#         #print(type(obj))
+#         dot = [i for i in range(1024) if
+#                obj.startswith('.', i) or obj.startswith('\n', i)]
+#         #print(dot)
+#         if len(dot) == 0:
+#             dot = [i for i in range(1024) if obj.startswith(' ', i)]
+#             if len(dot) == 0:
+#                 obj = obj[:1024]
+#             else:
+#                 obj = obj[:dot[-1]]
+#         else:
+#             obj = obj[:dot[-1]]
+#         #print(len(obj))
+#         #print((obj))
+#
+#         raw_text = remove_symbols_from_text(obj)
+#         raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+#         # print(raw_text)
+#         # print(raw_text + "\n\n" + str(obj["id"]))
+#         payload = lm.check_probabilities(raw_text, topk=20)
+#             # print(payload)
+#         res = {
+#             "request": {'project': "new", 'text': raw_text},
+#             "result": payload
+#         }
+#         # print(res)
+#         # print(output)
+#         output.append(res)
+#         # break
+#         torch.cuda.empty_cache()
+#         print(counter)
+#         #if counter == 100:
+#             #break
+# with open('gpt3.analyzed.machine-485.json', 'w') as outfile:
+#     json.dump(output, outfile)
+
+
+# analyze grover human and machine
+with jsonlines.open('generator=mega_dataset=p0.94.jsonl') as reader:
     for obj in reader:
-        counter = counter + 1
-        #print(obj)
-        #print(len(obj))
-        #print(type(obj))
-        dot = [i for i in range(1024) if
-               obj.startswith('.', i) or obj.startswith('\n', i)]
-        #print(dot)
-        if len(dot) == 0:
-            dot = [i for i in range(1024) if obj.startswith(' ', i)]
+        if obj["label"] == "machine":  # change this to human or machine
+            counter = counter + 1
+            # print(obj)
+            # print(len(obj))
+            # print(type(obj))
+            dot = [i for i in range(1024) if
+                   obj["article"].startswith('.', i) or obj["article"].startswith('\n', i)]
+            # print(dot)
             if len(dot) == 0:
-                obj = obj[:1024]
-            obj = obj[:dot[-1]]
-        else:
-            obj = obj[:dot[-1]]
-        #print(len(obj))
-        #print((obj))
+                dot = [i for i in range(1024) if obj["article"].startswith(' ', i)]
+                if len(dot) == 0:
+                    obj = obj["article"][:1024]
+                else:
+                    obj = obj["article"][:dot[-1]]
+            else:
+                obj = obj["article"][:dot[-1]]
+            # print(len(obj))
+            # print((obj))
 
-        raw_text = remove_symbols_from_text(obj)
-        raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
-        # print(raw_text)
-        # print(raw_text + "\n\n" + str(obj["id"]))
-        payload = lm.check_probabilities(raw_text, topk=20)
+            raw_text = remove_symbols_from_text(obj)
+            raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+            # print(raw_text)
+            # print(raw_text + "\n\n" + str(obj["id"]))
+            payload = lm.check_probabilities(raw_text, topk=20)
             # print(payload)
-        res = {
-            "request": {'project': "new", 'text': raw_text},
-            "result": payload
-        }
-        # print(res)
-        # print(output)
-        output.append(res)
-        # break
-        torch.cuda.empty_cache()
-        print(counter)
-        #if counter == 100:
-            #break
-with open('gpt3.analyzed.machine-485.json', 'w') as outfile:
+            res = {
+                "request": {'project': "new", 'text': raw_text},
+                "result": payload
+            }
+            # print(res)
+            # print(output)
+            output.append(res)
+            # break
+            torch.cuda.empty_cache()
+            print(counter)
+            if counter == 100:
+                break
+with open('grover.analyzed.machine-100.json', 'w') as outfile:
     json.dump(output, outfile)
-
