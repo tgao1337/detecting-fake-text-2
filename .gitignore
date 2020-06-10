@@ -23,3 +23,6 @@ gpt2.analyzed.webtext-1000..json
 gpt2.analyzed.webtext-5000..json
 gpt2.analyzed.webtext-1000.json
 gpt2.analyzed.webtext-5000.json
+generator=mega_dataset=p0.94.jsonl
+generator=mega_discriminator=grover_discsize=mega_dataset=p0.94_test-probs.npy
+generator=mega_discriminator=grover_discsize=mega_dataset=p0.94_val-probs.npy

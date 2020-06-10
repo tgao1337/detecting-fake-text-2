@@ -7,6 +7,9 @@ This version is not forked. The forked version will no longer be updated.
 - https://storage.googleapis.com/gpt-2/output-dataset/v1/medium-345M-k40.valid.jsonl
 - https://storage.googleapis.com/gpt-2/output-dataset/v1/medium-345M-k40.train.jsonl
 - https://raw.githubusercontent.com/openai/gpt-3/master/175b_samples.jsonl
+- https://storage.googleapis.com/grover-models/generation_examples/generator=mega~dataset=p0.94.jsonl
+- https://storage.googleapis.com/grover-models/generation_examples/generator=mega~discriminator=grover~discsize=mega~dataset=p0.94~test-probs.npy
+- https://storage.googleapis.com/grover-models/generation_examples/generator=mega~discriminator=grover~discsize=mega~dataset=p0.94~val-probs.npy
 
 # GLTR: Giant Language Model Test Room
 Detecting text that was generated from large language models (e.g. GPT-2).
