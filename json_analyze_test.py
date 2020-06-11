@@ -254,9 +254,16 @@ for item in data:
 # #print(ori)
 # print(len(ori))
 
-res = list_of_norm_fracp_from_file("gpt2.analyzed.medk40train-1000.json")
+res = list_of_fracp_from_file("grover.analyzed.human-1000.json")
+# pickle.dump(res, open("fracp.GROVER-human-1000-lst-notNorm.pickle", "wb"))
 df = pd.DataFrame(res)
+df = df.div(df.sum(axis=1), axis=0)
+# x = (df.sum(axis=1)).to_frame()
+# df.to_pickle("fracp.GROVER-human-1000-pd-normalized.pickle")
+# df.to_csv("fracp.GROVER-human-1000-normalized.csv")
 print(df)
+des = df.describe()
+des.to_csv("describetest.csv")
 print(df.describe())
 
-
+print(1)

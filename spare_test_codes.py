@@ -155,4 +155,94 @@ print(ori)
 print(len(ori))
 
 
-##############
+###################################
+
+## open analyzed json to test
+#with open("gpt2.analyzed.webtext-10.json") as f:
+ #   data = json.load(f)
+'''
+x = 0
+print(type(data))
+print(len(data))
+
+for item in data:
+    print(x)
+    print(get_top_k_count_from_file(item))
+    print(fracp_bin_counter_from_file(item))
+    x = x + 1'''
+
+## open two json hGPT2 and mGPT2 and kld and then save as pickle
+# kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-1000.json", "gpt2.analyzed.medk40train-1000.json")
+# pickle.dump(kld_lst, open("hGPT2mGPT2-1000-list-original.pickle", "wb"))
+# print(len(kld_lst))
+# print(kld_lst)
+# kld_df = pd.DataFrame(kld_lst)
+# kld_df.to_pickle("hGPT2mGPT2-1000-pd-original.pickle")
+# kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+# kld_df.to_pickle("hGPT2mGPT2-1000-pd-no_infinity.pickle")
+# print(kld_df)
+# print(kld_df.describe())
+
+
+## unpickle gtp2gpt2
+# unpickle_original_pd = pd.read_pickle("hGPT2mGPT2-100-pd-original.pickle")
+# print(unpickle_original_pd)
+# print(unpickle_original_pd.describe())
+#
+# unpickle_noinf_pd = pd.read_pickle("hGPT2mGPT2-100-pd-no_infinity.pickle")
+# print(unpickle_noinf_pd)
+# print(unpickle_noinf_pd.describe())
+#
+# ori = pickle.load(open("hGPT2mGPT2-100-list-original.pickle", "rb"))
+# print(ori)
+# print(len(ori))
+
+# # open hgpt2 and mgpt3 and save as pickle
+# kld_lst = compare_json_files_kld("gpt2.analyzed.webtext-1000.json", "gpt3.analyzed.machine-485.json")
+# pickle.dump(kld_lst, open("hGPT2mGPT3-1000-list-original.pickle", "wb"))
+# print(len(kld_lst))
+# print(kld_lst)
+# kld_df = pd.DataFrame(kld_lst)
+# kld_df.to_pickle("hGPT2mGPT3-1000-pd-original.pickle")
+# kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+# kld_df.to_pickle("hGPT2mGPT3-1000-pd-no_infinity.pickle")
+# print(kld_df)
+# print(kld_df.describe())
+
+
+# # open gpt2 and grover and save as pickle
+# kld_lst = compare_json_files_kld("gpt2.analyzed.medk40train-1000.json", "grover.analyzed.machine-1000.json")
+# pickle.dump(kld_lst, open("mGPT2mGROVER-1000-list-original.pickle", "wb"))
+# print(len(kld_lst))
+# kld_df = pd.DataFrame(kld_lst)
+# print(kld_df.describe())
+# kld_df.to_pickle("mGPT2mGROVER-1000-pd-original.pickle")
+# kld_df = pd.DataFrame(kld_lst).replace([np.inf, -np.inf], np.nan).dropna()
+# kld_df.to_pickle("mGPT2mGROVER-1000-pd-no_infinity.pickle")
+# print(kld_df.describe())
+
+
+# # unpickle gtp2gpt2
+# unpickle_original_pd = pd.read_pickle("mGPT2mGROVER-1000-pd-original.pickle")
+# print(unpickle_original_pd)
+# print(unpickle_original_pd.describe())
+#
+# unpickle_noinf_pd = pd.read_pickle("mGPT2mGROVER-1000-pd-no_infinity.pickle")
+# print(unpickle_noinf_pd)
+# print(unpickle_noinf_pd.describe())
+#
+# ori = pickle.load(open("mGPT2mGROVER-1000-list-original.pickle", "rb"))
+# #print(ori)
+# print(len(ori))
+
+res = list_of_norm_fracp_from_file("gpt2.analyzed.medk40train-1000.json")
+pickle.dump(res, open("fracp.GPT2-machine-1000-lst-normalized.pickle", "wb"))
+df = pd.DataFrame(res)
+df.to_pickle("fracp.GPT2-machine-1000-pd-normalized.pickle")
+print(df)
+print(df.describe())
+
+
+
+###################################################
+
