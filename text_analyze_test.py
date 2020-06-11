@@ -195,7 +195,7 @@ lm = api.LM()
 # analyze grover human and machine
 with jsonlines.open('generator=mega_dataset=p0.94.jsonl') as reader:
     for obj in reader:
-        if obj["label"] == "machine":  # change this to human or machine
+        if obj["label"] == "human":  # change this to human or machine
             counter = counter + 1
             # print(obj)
             # print(len(obj))
@@ -230,7 +230,7 @@ with jsonlines.open('generator=mega_dataset=p0.94.jsonl') as reader:
             # break
             torch.cuda.empty_cache()
             print(counter)
-            if counter == 100:
+            if counter == 1000:
                 break
-with open('grover.analyzed.machine-100.json', 'w') as outfile:
+with open('grover.analyzed.human-1000.json', 'w') as outfile:
     json.dump(output, outfile)
