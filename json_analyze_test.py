@@ -147,6 +147,35 @@ def compare_json_files_kld(filename1, filename2):
     return lst
 
 
+def list_of_fracp_from_file(filename):
+    # given two file names, get json from it, then return list
+    # returns list of list of 10 frac p bins
+    lst = []
+    with open(filename) as f1:
+        d1 = json.load(f1)
+
+    for d1x in d1:
+        lst.append(fracp_bin_counter_from_file(d1x))
+    return lst
+
+
+def list_of_norm_fracp_from_file(filename):
+    # given two file names, get json from it, then return list
+    # returns list of list of 10 frac p bins that are normalized
+    lst = []
+    with open(filename) as f1:
+        d1 = json.load(f1)
+
+    for d1x in d1:
+        bins = fracp_bin_counter_from_file(d1x)
+        tot = sum(bins)
+        for i in range(10):
+            bins[i] = bins[i] / tot
+        print(sum(bins))
+        lst.append(bins)
+    return lst
+
+
 ## open analyzed json to test
 #with open("gpt2.analyzed.webtext-10.json") as f:
  #   data = json.load(f)
@@ -224,5 +253,10 @@ for item in data:
 # ori = pickle.load(open("mGPT2mGROVER-1000-list-original.pickle", "rb"))
 # #print(ori)
 # print(len(ori))
+
+res = list_of_norm_fracp_from_file("gpt2.analyzed.medk40train-1000.json")
+df = pd.DataFrame(res)
+print(df)
+print(df.describe())
 
 
