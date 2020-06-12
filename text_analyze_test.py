@@ -21,6 +21,8 @@ import json
 from backend import api
 import jsonlines
 import torch
+from guppy import hpy
+
 
 def remove_symbols_from_text(text):
     # given string, removes symbols
@@ -232,5 +234,8 @@ with jsonlines.open('generator=mega_dataset=p0.94.jsonl') as reader:
             print(counter)
             if counter == 1000:
                 break
+
+h = hpy()
+print(h.heap())
 with open('grover.analyzed.human-1000.json', 'w') as outfile:
     json.dump(output, outfile)
