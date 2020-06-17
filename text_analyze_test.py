@@ -162,7 +162,7 @@ with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
         torch.cuda.empty_cache()
         h = hpy()
         print(h.heap())
-        if obj["id"] == 10000:
+        if counter == 10000:
             break
 
 #with open('gpt2.analyzed.webtext-5000.json', 'w') as outfile:
