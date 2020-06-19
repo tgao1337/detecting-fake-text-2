@@ -159,6 +159,16 @@ def list_of_fracp_from_file(filename):
     return lst
 
 
+def list_of_fracp_from_jsonl_file(filename):
+    # given two file names of json lines, get json from it, then return list
+    # returns list of list of 10 frac p bins
+    lst = []
+    with jsonlines.open(filename) as reader:
+        for obj in reader:
+            lst.append(fracp_bin_counter_from_file(obj))
+    return lst
+
+
 def list_of_norm_fracp_from_file(filename):
     # given two file names, get json from it, then return list
     # returns list of list of 10 frac p bins that are normalized
@@ -254,7 +264,7 @@ for item in data:
 # #print(ori)
 # print(len(ori))
 
-# get frac p for each text analyzed
+''''# get frac p for each text analyzed
 res = list_of_fracp_from_file("grover.analyzed.machine-5000.json")
 pickle.dump(res, open("fracp.GROVER-machine-5000-lst-notNorm.pickle", "wb"))
 df = pd.DataFrame(res)
@@ -270,5 +280,24 @@ print(df.describe())
 unpick = pd.read_pickle("fracp.GROVER-machine-5000-pd-normalized.pickle")
 print(unpick)
 des = unpick.describe()
-des.to_csv("fracp.GROVER-machine-5000-pd-normalized-describe.csv")
+des.to_csv("fracp.GROVER-machine-5000-pd-normalized-describe.csv")'''
+
+
+# get frac p for each text analyzed from jsonlines
+res = list_of_fracp_from_jsonl_file("grover.analyzed.machine-10000.jsonl")
+pickle.dump(res, open("fracp.GROVER-machine-10000-lst-notNorm.pickle", "wb"))
+df = pd.DataFrame(res)
+df = df.div(df.sum(axis=1), axis=0)
+# x = (df.sum(axis=1)).to_frame()
+df.to_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
+df.to_csv("fracp.GROVER-machine-10000-normalized.csv")
+print(df)
+#des = df.describe()
+#des.to_csv("describetest.csv")
+print(df.describe())
+
+unpick = pd.read_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
+print(unpick)
+des = unpick.describe()
+des.to_csv("fracp.GROVER-machine-10000-pd-normalized-describe.csv")
 
