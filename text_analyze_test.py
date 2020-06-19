@@ -121,49 +121,50 @@ print("{:.2f} Seconds for a sample from GPT-2".format(end - start))"""
 output = []
 
 
-# analyze gpt2
-counter = 0
-lm = api.LM()
-with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
-    for obj in reader:
-        raw_text = obj["text"]
-        if obj["length"] > 1023:  # if longer than 1023, cut short
-            dot = [i for i in range(1024) if
-                   raw_text.startswith('.', i) or raw_text.startswith('\n', i)]
-            # print(dot)
-            if len(dot) == 0:
-                dot = [i for i in range(1024) if
-                       raw_text.startswith(' ', i)]
-                if len(dot) == 0:
-                    raw_text = raw_text[:1024]
-                else:
-                    raw_text = raw_text[:dot[-1]]
-            else:
-                raw_text = raw_text[:dot[-1]]
-        counter = counter + 1
-        print(counter)
-
-        raw_text = remove_symbols_from_text(raw_text)
-        raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
-        # print(raw_text)
-        # print(raw_text + "\n\n" + str(obj["id"]))
-        payload = lm.check_probabilities(raw_text, topk=20)
-        # print(payload)
-        res = {
-            "request": {'project': "new", 'text': raw_text},
-            "result": payload
-        }
-        # print(res)
-        # print(output)
-        # output.append(res)
-        with jsonlines.open('gpt2.analyzed.human-10000.jsonl', mode='a') as writer:
-            writer.write(res)
-        # break
-        torch.cuda.empty_cache()
-        h = hpy()
-        print(h.heap())
-        if obj["id"] == 10000:
-            break
+# # analyze gpt2
+# counter = 0
+# lm = api.LM()
+# with jsonlines.open('gpt-2.webtext.train.jsonl') as reader:
+#     for obj in reader:
+#         if obj["id"] > 15103:
+#             raw_text = obj["text"]
+#             if obj["length"] > 1023:  # if longer than 1023, cut short
+#                 dot = [i for i in range(1024) if
+#                        raw_text.startswith('.', i) or raw_text.startswith('\n', i)]
+#                 # print(dot)
+#                 if len(dot) == 0:
+#                     dot = [i for i in range(1024) if
+#                            raw_text.startswith(' ', i)]
+#                     if len(dot) == 0:
+#                         raw_text = raw_text[:1024]
+#                     else:
+#                         raw_text = raw_text[:dot[-1]]
+#                 else:
+#                     raw_text = raw_text[:dot[-1]]
+#             counter = counter + 1
+#             print(obj["id"])
+#
+#             raw_text = remove_symbols_from_text(raw_text)
+#             raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+#             # print(raw_text)
+#             # print(raw_text + "\n\n" + str(obj["id"]))
+#             payload = lm.check_probabilities(raw_text, topk=20)
+#             # print(payload)
+#             res = {
+#                 "request": {'project': "new", 'text': raw_text},
+#                 "result": payload
+#             }
+#             # print(res)
+#             # print(output)
+#             # output.append(res)
+#             with jsonlines.open('gpt2.analyzed.human-10000.jsonl', mode='a') as writer:
+#                 writer.write(res)
+#             # break
+#             torch.cuda.empty_cache()
+#             h = hpy()
+#             print(h.heap())
+#             if obj["id"] == 25000:
+#                 break
 
 #with open('gpt2.analyzed.webtext-5000.json', 'w') as outfile:
 #    json.dump(output, outfile)
@@ -259,3 +260,99 @@ lm = api.LM()
 # print(h.heap())
 # with open('grover.analyzed.human-1000.json', 'w') as outfile:
 #     json.dump(output, outfile)
+
+
+
+
+# # analyze gpt2 machine
+# counter = 0
+# lm = api.LM()
+# with jsonlines.open('gpt-2.medium-345M-k40.train.jsonl') as reader:
+#     for obj in reader:
+#         if obj["id"] > 14988:
+#             raw_text = obj["text"]
+#             if obj["length"] > 1023:  # if longer than 1023, cut short
+#                 dot = [i for i in range(1024) if
+#                        raw_text.startswith('.', i) or raw_text.startswith('\n', i)]
+#                 # print(dot)
+#                 if len(dot) == 0:
+#                     dot = [i for i in range(1024) if
+#                            raw_text.startswith(' ', i)]
+#                     if len(dot) == 0:
+#                         raw_text = raw_text[:1024]
+#                     else:
+#                         raw_text = raw_text[:dot[-1]]
+#                 else:
+#                     raw_text = raw_text[:dot[-1]]
+#             counter = counter + 1
+#             print(obj["id"])
+#
+#             raw_text = remove_symbols_from_text(raw_text)
+#             raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+#             # print(raw_text)
+#             # print(raw_text + "\n\n" + str(obj["id"]))
+#             payload = lm.check_probabilities(raw_text, topk=20)
+#             # print(payload)
+#             res = {
+#                 "request": {'project': "new", 'text': raw_text},
+#                 "result": payload
+#             }
+#             # print(res)
+#             # print(output)
+#             # output.append(res)
+#             with jsonlines.open('gpt2.analyzed.machine-10000.jsonl', mode='a') as writer:
+#                 writer.write(res)
+#             # break
+#             torch.cuda.empty_cache()
+#             h = hpy()
+#             print(h.heap())
+#             if obj["id"] == 25000:
+#                 break
+
+
+# analyze grover human and machine
+with jsonlines.open('generator=mega_dataset=p0.94.jsonl') as reader:
+    for obj in reader:
+        if obj["label"] == "human":  # change this to human or machine
+            print(counter)
+            counter = counter + 1
+            if counter > -1:
+
+                # print(obj)
+                # print(len(obj))
+                # print(type(obj))
+                dot = [i for i in range(1024) if
+                       obj["article"].startswith('.', i) or obj["article"].startswith('\n', i)]
+                # print(dot)
+                if len(dot) == 0:
+                    dot = [i for i in range(1024) if obj["article"].startswith(' ', i)]
+                    if len(dot) == 0:
+                        obj = obj["article"][:1024]
+                    else:
+                        obj = obj["article"][:dot[-1]]
+                else:
+                    obj = obj["article"][:dot[-1]]
+                # print(len(obj))
+                # print((obj))
+
+                raw_text = remove_symbols_from_text(obj)
+                raw_text = (raw_text.encode('ascii', 'ignore')).decode("utf-8")
+                # print(raw_text)
+                # print(raw_text + "\n\n" + str(obj["id"]))
+                payload = lm.check_probabilities(raw_text, topk=20)
+                # print(payload)
+                res = {
+                    "request": {'project': "new", 'text': raw_text},
+                    "result": payload
+                }
+                # print(res)
+                # print(output)
+                #output.append(res)
+                # break
+                with jsonlines.open('grover.analyzed.human-10000.jsonl', mode='a') as writer:
+                    writer.write(res)
+
+                torch.cuda.empty_cache()
+                print(counter)
+                if counter == 25000:
+                    break

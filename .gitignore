@@ -32,3 +32,7 @@ grover.analyzed.human-100.json
 grover.analyzed.machine-100.json
 grover.analyzed.human-5000.json
 grover.analyzed.machine-5000.json
+gpt2.analyzed.human-25000.jsonl
+gpt2.analyzed.machine-25000.jsonl
+grover.analyzed.human-15000.jsonl
+grover.analyzed.machine-10000.jsonl
