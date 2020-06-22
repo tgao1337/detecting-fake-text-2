@@ -7,6 +7,8 @@ from scipy.spatial import distance
 import jsonlines
 import numpy as np
 import pickle
+from scipy.stats import chisquare
+from scipy.stats import kstest
 
 
 def get_top_k_count(real_topk, top1 = 10, top2 = 100, top3 = 1000):
@@ -283,21 +285,52 @@ des = unpick.describe()
 des.to_csv("fracp.GROVER-machine-5000-pd-normalized-describe.csv")'''
 
 
-# get frac p for each text analyzed from jsonlines
-res = list_of_fracp_from_jsonl_file("grover.analyzed.machine-10000.jsonl")
-pickle.dump(res, open("fracp.GROVER-machine-10000-lst-notNorm.pickle", "wb"))
-df = pd.DataFrame(res)
-df = df.div(df.sum(axis=1), axis=0)
-# x = (df.sum(axis=1)).to_frame()
-df.to_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
-df.to_csv("fracp.GROVER-machine-10000-normalized.csv")
-print(df)
-#des = df.describe()
-#des.to_csv("describetest.csv")
-print(df.describe())
+# # get frac p for each text analyzed from jsonlines
+# res = list_of_fracp_from_jsonl_file("grover.analyzed.machine-10000.jsonl")
+# pickle.dump(res, open("fracp.GROVER-machine-10000-lst-notNorm.pickle", "wb"))
+# df = pd.DataFrame(res)
+# df = df.div(df.sum(axis=1), axis=0)
+# # x = (df.sum(axis=1)).to_frame()
+# df.to_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
+# df.to_csv("fracp.GROVER-machine-10000-normalized.csv")
+# print(df)
+# #des = df.describe()
+# #des.to_csv("describetest.csv")
+# print(df.describe())
+#
+# unpick = pd.read_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
+# print(unpick)
+# des = unpick.describe()
+# des.to_csv("fracp.GROVER-machine-10000-pd-normalized-describe.csv")
 
-unpick = pd.read_pickle("fracp.GROVER-machine-10000-pd-normalized.pickle")
-print(unpick)
-des = unpick.describe()
-des.to_csv("fracp.GROVER-machine-10000-pd-normalized-describe.csv")
 
+# # Anderson-Darling Test
+# from numpy.random import seed
+# from numpy.random import randn
+# from scipy.stats import anderson
+# # seed the random number generator
+# seed(1)
+# # generate univariate observations
+# data = 5 * randn(100) + 50
+# # normality test
+# result = anderson(data)
+# print('Statistic: %.3f' % result.statistic)
+# p = 0
+# for i in range(len(result.critical_values)):
+# 	sl, cv = result.significance_level[i], result.critical_values[i]
+# 	if result.statistic < result.critical_values[i]:
+# 		print('%.3f: %.3f, data looks normal (fail to reject H0)' % (sl, cv))
+# 	else:
+# 		print('%.3f: %.3f, data does not look normal (reject H0)' % (sl, cv))
+
+
+# chi squared gpt2 machine vs human
+observed = pd.read_pickle("fracp.GPT2-machine-25000-pd-normalized.pickle").mean(axis=0)
+expected = pd.read_pickle("fracp.GPT2-human-25000-pd-normalized.pickle").replace(0, 0.00000000000000000000000000000001).mean(axis=0)
+# expected = pd.read_pickle("fracp.GPT2-human-25000-pd-normalized.pickle")[:-3].replace(0, 0.00000000000000000000000000000001)
+print(expected.shape)
+chi_res = chisquare(observed, expected, 0, 0)
+print(type(expected))
+print(chi_res)
+ks = kstest(observed, expected)
+print(ks)
